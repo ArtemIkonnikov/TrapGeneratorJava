@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Main extends Application {
+public class TrapGenerator extends Application {
 
     static File batFile;
     static String batFilePath = " ";
@@ -224,7 +224,6 @@ public class Main extends Application {
 
                 Pattern pattern = Pattern.compile("(?<=enterprise=).+?(?=,)|(?<=1.3.6.1.6.3.1.1.4.1.0 = ).+?(?=;)");
                 Matcher matcher = pattern.matcher(receivedStr);
-
                 while (matcher.find()) {
                     trapOid = matcher.group();
                 }
@@ -244,11 +243,9 @@ public class Main extends Application {
             }
 
             File testFile = new File(batFilePath + "\\" + batFileName);
-
             if (!testFile.exists()) {
                 stringBuilder.append("SET NETSNMP_PATH=C:\\usr\\bin\n");
             }
-
             batFile = new File(batFilePath, batFileName);
 
             if (trap.version.equals("v1")) {
