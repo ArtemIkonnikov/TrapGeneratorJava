@@ -76,14 +76,14 @@ public class Controller {
             invalidFileFormatLog.setVisible(false);
             FileChooser fileChooser = new FileChooser();
             List<File> files = fileChooser.showOpenMultipleDialog(null);
-            Main.trapsReceivedPaths = new ArrayList<>();
+            TrapGenerator.trapsReceivedPaths = new ArrayList<>();
             StringBuilder stringBuilder = new StringBuilder("invalid file format ");
             for (File file : files) {
                 String fileName = file.getName();
                 String format = fileName.substring(fileName.lastIndexOf(".") + 1);
                 System.out.println(format);
                 if (format.equals("txt") || format.equals("log")) {
-                    Main.trapsReceivedPaths.add(file.getAbsolutePath());
+                    TrapGenerator.trapsReceivedPaths.add(file.getAbsolutePath());
                 } else {
                     stringBuilder.append("\"" + format + "\"");
                     invalidFileFormatLog.setText(stringBuilder.toString());
@@ -91,7 +91,7 @@ public class Controller {
                 }
             }
             StringBuilder sb = new StringBuilder();
-            for (String path : Main.trapsReceivedPaths) {
+            for (String path : TrapGenerator.trapsReceivedPaths) {
                 sb.append(path + " ; ");
             }
             logTextArea.setText(sb.toString());
@@ -102,9 +102,9 @@ public class Controller {
             invalidFileFormatRules.setVisible(false);
             FileChooser fileChooser = new FileChooser();
             File file = fileChooser.showOpenDialog(null);
-            Main.jsonRulesFilePath = file.getAbsolutePath();
-            rulesTextArea.setText(Main.jsonRulesFilePath);
-            tooltipRules.setText(Main.jsonRulesFilePath);
+            TrapGenerator.jsonRulesFilePath = file.getAbsolutePath();
+            rulesTextArea.setText(TrapGenerator.jsonRulesFilePath);
+            tooltipRules.setText(TrapGenerator.jsonRulesFilePath);
             String fileName = file.getName();
             rulesFormat = fileName.substring(fileName.lastIndexOf(".") + 1);
         });
@@ -112,21 +112,21 @@ public class Controller {
         saveButton.setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File dir = directoryChooser.showDialog(null);
-            Main.batFilePath = dir.getAbsolutePath();
-            saveTextArea.setText(Main.batFilePath);
-            tooltipSave.setText(Main.batFilePath);
+            TrapGenerator.batFilePath = dir.getAbsolutePath();
+            saveTextArea.setText(TrapGenerator.batFilePath);
+            tooltipSave.setText(TrapGenerator.batFilePath);
         });
 
         executeButton.setOnAction(event -> {
-            Main.versionList = new ArrayList<>();
+            TrapGenerator.versionList = new ArrayList<>();
             if (checkBox1.isSelected()) {
-                Main.versionList.add("v1");
+                TrapGenerator.versionList.add("v1");
             }
             if (checkBox2.isSelected()) {
-                Main.versionList.add("v2");
+                TrapGenerator.versionList.add("v2");
             }
-            Main.inputDataParser();
-            if (Main.errorVisibility) {
+            TrapGenerator.inputDataParser();
+            if (TrapGenerator.errorVisibility) {
                 invalidFileFormatRules.setText("invalid file format \"" + rulesFormat + "\"");
                 invalidFileFormatRules.setVisible(true);
             }

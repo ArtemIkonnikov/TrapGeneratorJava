@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Main extends Application {
+public class TrapGenerator extends Application {
 
     static File batFile;
     static String batFilePath = " ";
