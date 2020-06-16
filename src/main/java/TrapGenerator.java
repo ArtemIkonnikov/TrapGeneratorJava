@@ -1,5 +1,3 @@
-package sample;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,6 +34,9 @@ public class TrapGenerator extends Application {
     static List<String> versionList = new ArrayList<>();
     static Boolean errorVisibility = false;
     static Boolean isCommandLine = false;
+    static String ipFinder = "(?<= - ).+?(?=\\/| :)|(?<= - ).+?(?= : )";
+    static String vbsFinder = "((?<=; |VBS\\[)1.3.6.1\\..+?(?= ))( =)(.+?)(?=;|\\])";
+    static String trapOidFinder = "(?<=enterprise=).+?(?=,)|(?<=1.3.6.1.6.3.1.1.4.1.0 = ).+?(?=;)";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -70,9 +71,8 @@ public class TrapGenerator extends Application {
         Map<String, Object> rawMapVarbinds = new HashMap<>();
         Map<String, String> mapVarbinds = new HashMap<>();
 
-        String root = System.getProperty("user.dir");
         if (batFilePath == null || batFilePath.equals(" ")) {
-            batFilePath = root;
+            batFilePath = System.getProperty("user.dir");
         }
 
         try {
@@ -180,7 +180,7 @@ public class TrapGenerator extends Application {
         for (String oid : mapVarbinds.keySet()) {
             if (receivedStr.contains(oid)) {
 
-                Pattern pattern1 = Pattern.compile("(?<= - ).+?(?=\\/| :)|(?<= - ).+?(?= : )");
+                Pattern pattern1 = Pattern.compile(ipFinder);
                 Matcher matcher1 = pattern1.matcher(receivedStr);
 
                 while (matcher1.find())
@@ -198,7 +198,7 @@ public class TrapGenerator extends Application {
                     trapVer = "v2";
                 }
 
-                Pattern pattern2 = Pattern.compile("((?<=; |VBS\\[)1.3.6.1\\..+?(?= ))( =)(.+?)(?=;|\\])");
+                Pattern pattern2 = Pattern.compile(vbsFinder);
                 Matcher matcher2 = pattern2.matcher(receivedStr);
 
                 while (matcher2.find()) {
@@ -222,7 +222,7 @@ public class TrapGenerator extends Application {
                     }
                 }
 
-                Pattern pattern = Pattern.compile("(?<=enterprise=).+?(?=,)|(?<=1.3.6.1.6.3.1.1.4.1.0 = ).+?(?=;)");
+                Pattern pattern = Pattern.compile(trapOidFinder);
                 Matcher matcher = pattern.matcher(receivedStr);
                 while (matcher.find()) {
                     trapOid = matcher.group();

@@ -1,5 +1,3 @@
-package sample;
-
 import java.io.File;
 import java.net.URL;
 
@@ -75,45 +73,50 @@ public class Controller {
             invalidFileFormatLog.setVisible(false);
             FileChooser fileChooser = new FileChooser();
             List<File> files = fileChooser.showOpenMultipleDialog(null);
-            TrapGenerator.trapsReceivedPaths = new ArrayList<>();
-            StringBuilder stringBuilder = new StringBuilder("invalid file format ");
-            for (File file : files) {
-                String fileName = file.getName();
-                String format = fileName.substring(fileName.lastIndexOf(".") + 1);
-                System.out.println(format);
-                if (format.equals("txt") || format.equals("log")) {
-                    TrapGenerator.trapsReceivedPaths.add(file.getAbsolutePath());
-                } else {
-                    stringBuilder.append("\"" + format + "\"");
-                    invalidFileFormatLog.setText(stringBuilder.toString());
-                    invalidFileFormatLog.setVisible(true);
+            if (files != null) {
+                TrapGenerator.trapsReceivedPaths = new ArrayList<>();
+                StringBuilder stringBuilder = new StringBuilder("invalid file format ");
+                for (File file : files) {
+                    String fileName = file.getName();
+                    String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+                    if (format.equals("txt") || format.equals("log")) {
+                        TrapGenerator.trapsReceivedPaths.add(file.getAbsolutePath());
+                    } else {
+                        stringBuilder.append("\"" + format + "\"");
+                        invalidFileFormatLog.setText(stringBuilder.toString());
+                        invalidFileFormatLog.setVisible(true);
+                    }
                 }
+                StringBuilder sb = new StringBuilder();
+                for (String path : TrapGenerator.trapsReceivedPaths) {
+                    sb.append(path + " ; ");
+                }
+                logTextArea.setText(sb.toString());
+                tooltipLog.setText(sb.toString());
             }
-            StringBuilder sb = new StringBuilder();
-            for (String path : TrapGenerator.trapsReceivedPaths) {
-                sb.append(path + " ; ");
-            }
-            logTextArea.setText(sb.toString());
-            tooltipLog.setText(sb.toString());
         });
 
         rulesButton.setOnAction(event -> {
             invalidFileFormatRules.setVisible(false);
             FileChooser fileChooser = new FileChooser();
             File file = fileChooser.showOpenDialog(null);
-            TrapGenerator.jsonRulesFilePath = file.getAbsolutePath();
-            rulesTextArea.setText(TrapGenerator.jsonRulesFilePath);
-            tooltipRules.setText(TrapGenerator.jsonRulesFilePath);
-            String fileName = file.getName();
-            rulesFormat = fileName.substring(fileName.lastIndexOf(".") + 1);
+            if (file!=null) {
+                TrapGenerator.jsonRulesFilePath = file.getAbsolutePath();
+                rulesTextArea.setText(TrapGenerator.jsonRulesFilePath);
+                tooltipRules.setText(TrapGenerator.jsonRulesFilePath);
+                String fileName = file.getName();
+                rulesFormat = fileName.substring(fileName.lastIndexOf(".") + 1);
+            }
         });
 
         saveButton.setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File dir = directoryChooser.showDialog(null);
-            TrapGenerator.batFilePath = dir.getAbsolutePath();
-            saveTextArea.setText(TrapGenerator.batFilePath);
-            tooltipSave.setText(TrapGenerator.batFilePath);
+            if (dir!=null) {
+                TrapGenerator.batFilePath = dir.getAbsolutePath();
+                saveTextArea.setText(TrapGenerator.batFilePath);
+                tooltipSave.setText(TrapGenerator.batFilePath);
+            }
         });
 
         executeButton.setOnAction(event -> {
