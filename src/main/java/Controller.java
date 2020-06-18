@@ -73,6 +73,7 @@ public class Controller {
             invalidFileFormatLog.setVisible(false);
             FileChooser fileChooser = new FileChooser();
             List<File> files = fileChooser.showOpenMultipleDialog(null);
+<<<<<<< HEAD:src/main/java/Controller.java
             if (files != null) {
                 TrapGenerator.trapsReceivedPaths = new ArrayList<>();
                 StringBuilder stringBuilder = new StringBuilder("invalid file format ");
@@ -86,6 +87,20 @@ public class Controller {
                         invalidFileFormatLog.setText(stringBuilder.toString());
                         invalidFileFormatLog.setVisible(true);
                     }
+=======
+            TrapGenerator.trapsReceivedPaths = new ArrayList<>();
+            StringBuilder stringBuilder = new StringBuilder("invalid file format ");
+            for (File file : files) {
+                String fileName = file.getName();
+                String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+                System.out.println(format);
+                if (format.equals("txt") || format.equals("log")) {
+                    TrapGenerator.trapsReceivedPaths.add(file.getAbsolutePath());
+                } else {
+                    stringBuilder.append("\"" + format + "\"");
+                    invalidFileFormatLog.setText(stringBuilder.toString());
+                    invalidFileFormatLog.setVisible(true);
+>>>>>>> master:src/sample/Controller.java
                 }
                 StringBuilder sb = new StringBuilder();
                 for (String path : TrapGenerator.trapsReceivedPaths) {
@@ -94,12 +109,22 @@ public class Controller {
                 logTextArea.setText(sb.toString());
                 tooltipLog.setText(sb.toString());
             }
+<<<<<<< HEAD:src/main/java/Controller.java
+=======
+            StringBuilder sb = new StringBuilder();
+            for (String path : TrapGenerator.trapsReceivedPaths) {
+                sb.append(path + " ; ");
+            }
+            logTextArea.setText(sb.toString());
+            tooltipLog.setText(sb.toString());
+>>>>>>> master:src/sample/Controller.java
         });
 
         rulesButton.setOnAction(event -> {
             invalidFileFormatRules.setVisible(false);
             FileChooser fileChooser = new FileChooser();
             File file = fileChooser.showOpenDialog(null);
+<<<<<<< HEAD:src/main/java/Controller.java
             if (file!=null) {
                 TrapGenerator.jsonRulesFilePath = file.getAbsolutePath();
                 rulesTextArea.setText(TrapGenerator.jsonRulesFilePath);
@@ -107,16 +132,29 @@ public class Controller {
                 String fileName = file.getName();
                 rulesFormat = fileName.substring(fileName.lastIndexOf(".") + 1);
             }
+=======
+            TrapGenerator.jsonRulesFilePath = file.getAbsolutePath();
+            rulesTextArea.setText(TrapGenerator.jsonRulesFilePath);
+            tooltipRules.setText(TrapGenerator.jsonRulesFilePath);
+            String fileName = file.getName();
+            rulesFormat = fileName.substring(fileName.lastIndexOf(".") + 1);
+>>>>>>> master:src/sample/Controller.java
         });
 
         saveButton.setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File dir = directoryChooser.showDialog(null);
+<<<<<<< HEAD:src/main/java/Controller.java
             if (dir!=null) {
                 TrapGenerator.batFilePath = dir.getAbsolutePath();
                 saveTextArea.setText(TrapGenerator.batFilePath);
                 tooltipSave.setText(TrapGenerator.batFilePath);
             }
+=======
+            TrapGenerator.batFilePath = dir.getAbsolutePath();
+            saveTextArea.setText(TrapGenerator.batFilePath);
+            tooltipSave.setText(TrapGenerator.batFilePath);
+>>>>>>> master:src/sample/Controller.java
         });
 
         executeButton.setOnAction(event -> {
